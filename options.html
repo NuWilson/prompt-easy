@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prompt Easy</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body class="dark">
+    <main class="container">
+      <header>
+        <div class="header-content">
+          <img src="logo.png" alt="Prompt Easy" class="logo-large" id="logo" />
+          <div>
+            <h1>Prompt Easy</h1>
+            <p>Manage your shortcuts and settings</p>
+          </div>
+        </div>
+        <button id="theme-toggle" class="ghost" title="Toggle theme" style="padding: 8px 12px;">🌙</button>
+      </header>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="shortcuts">Shortcuts</button>
+        <button class="tab" data-tab="settings">Settings</button>
+      </nav>
+
+      <!-- Shortcuts Tab -->
+      <div id="shortcuts-tab" class="tab-content active">
+        <section class="card">
+          <div class="card-header">
+            <h2>Manage Shortcuts</h2>
+            <div class="header-actions">
+              <button id="export-button" class="ghost">Export</button>
+              <button id="import-button" class="ghost">Import</button>
+              <input id="import-file" type="file" accept="application/json" hidden />
+            </div>
+          </div>
+
+          <div class="search-section">
+            <input id="search-input" type="search" placeholder="Search shortcuts..." />
+          </div>
+
+          <div id="shortcut-list" class="shortcut-list"></div>
+
+          <div class="form-section">
+            <h3 id="form-title">New Shortcut</h3>
+            <label>
+              Name
+              <input id="name-input" type="text" placeholder="#investigate" />
+            </label>
+            <label>
+              Template
+              <textarea id="template-input" rows="6" placeholder="Prompt template"></textarea>
+            </label>
+            <label>
+              Tags (comma separated)
+              <input id="tags-input" type="text" placeholder="research,analysis" />
+            </label>
+            <div class="form-actions">
+              <button id="save-shortcut-button" class="primary">Save Shortcut</button>
+              <button id="reset-shortcut-button" class="ghost">Reset</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Settings Tab -->
+      <div id="settings-tab" class="tab-content">
+        <section class="card">
+          <h2>Expansion</h2>
+          <label class="row">
+            <input id="auto-expand" type="checkbox" />
+            Auto-expand on Space/Enter
+          </label>
+          <label class="row">
+            <input id="auto-focus" type="checkbox" />
+            Auto-focus AI input on supported sites
+          </label>
+          <label class="row">
+            <input id="auto-send" type="checkbox" />
+            Auto-send after insertion on supported AI sites
+          </label>
+          <div class="hint">
+            Hotkey: <strong>Ctrl+Shift+E</strong> (Windows/Linux) or <strong>Cmd+Shift+E</strong> (Mac).
+            Customize it via <em>chrome://extensions/shortcuts</em>.
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Storage</h2>
+          <label>
+            Storage preference
+            <select id="storage-area">
+              <option value="sync">Sync (recommended)</option>
+              <option value="local">Local only</option>
+            </select>
+          </label>
+          <p class="hint">Sync stores shortcuts across devices when you are signed in.</p>
+        </section>
+
+        <section class="actions">
+          <button id="save-settings-button" class="primary">Save Settings</button>
+          <span id="status" class="status"></span>
+        </section>
+      </div>
+
+      <div id="toast" class="toast" hidden></div>
+    </main>
+
+    <script src="theme.js"></script>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

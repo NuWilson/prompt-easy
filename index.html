@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Easy - Turn simple shortcuts into expert-level prompts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-tertiary: #1a1a1a;
+      --text-primary: #fafafa;
+      --text-secondary: #a3a3a3;
+      --text-tertiary: #737373;
+      --border: #262626;
+      --border-hover: #404040;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    .light {
+      --bg-primary: #ffffff;
+      --bg-secondary: #fafafa;
+      --bg-tertiary: #f5f5f5;
+      --text-primary: #0a0a0a;
+      --text-secondary: #525252;
+      --text-tertiary: #737373;
+      --border: #e5e5e5;
+      --border-hover: #d4d4d4;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(10, 10, 10, 0.8);
+    }
+
+    .light nav {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-secondary);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Sections */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-header h2 {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    /* Cards */
+    .card {
+      padding: 32px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 24px var(--shadow);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--bg-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--accent);
+    }
+
+    .card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+      font-size: 13px;
+      color: var(--text-secondary);
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    .code-block .accent {
+      color: var(--accent);
+    }
+
+    /* Social proof */
+    .social-proof {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .social-proof p {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 32px;
+    }
+
+    .social-proof-logos {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      opacity: 0.6;
+    }
+
+    .social-proof-logos span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* Testimonials */
+    .testimonial {
+      padding: 32px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .testimonial p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .testimonial-role {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    /* Pricing */
+    .pricing-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .pricing-toggle button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .pricing-toggle button.active {
+      background: var(--bg-secondary);
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    .pricing-card {
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pricing-price {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 24px 0 8px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 32px 0;
+    }
+
+    .pricing-features li {
+      padding: 12px 0;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* FAQ */
+    .faq-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .faq-answer {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Footer */
+    footer {
+      padding: 80px 0 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 80px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .section-header h2 {
+        font-size: 32px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="nav-content">
+        <div class="nav-links">
+          <a href="#product">Product</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#templates">Templates</a>
+          <a href="#docs">Docs</a>
+        </div>
+        <div class="nav-actions">
+          <a href="#login" class="btn btn-ghost">Login</a>
+          <a href="#get-started" class="btn btn-primary">Get Started</a>
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">☀</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Turn simple shortcuts into expert-level prompts.</h1>
+      <p>Expand short #hashtags into full AI prompt templates anywhere on the web. No context switching, no copying, no friction.</p>
+      <div class="hero-cta">
+        <a href="#get-started" class="btn btn-primary">Get Started</a>
+        <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="social-proof">
+    <div class="container">
+      <p>Used by teams at</p>
+      <div class="social-proof-logos">
+        <span>Company A</span>
+        <span>Company B</span>
+        <span>Company C</span>
+        <span>Company D</span>
+      </div>
+      <div style="margin-top: 48px; display: flex; justify-content: center; gap: 64px; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">10K+</div>
+          <div style="font-size: 14px; color: var(--text-tertiary);">Active users</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">500K+</div>
+          <div style="font-size: 14px; color: var(--text-tertiary);">Prompts expanded</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">99.9%</div>
+          <div style="font-size: 14px; color: var(--text-tertiary);">Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How it works</h2>
+        <p>Three simple steps to transform your workflow</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-icon">⌨</div>
+          <h3>Type a shortcut</h3>
+          <p>Type #investigate or any custom shortcut in any text field.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Press space</h3>
+          <p>The shortcut automatically expands into your full prompt template.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>Use anywhere</h3>
+          <p>Works on ChatGPT, Claude, Perplexity, and any website.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <h2>Everything you need</h2>
+        <p>Powerful features without the complexity</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Instant expansion</h3>
+          <p>Type and expand in milliseconds. No delays, no lag.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>Works everywhere</h3>
+          <p>Compatible with all major AI platforms and any website.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⌨</div>
+          <h3>Custom templates</h3>
+          <p>Create unlimited shortcuts with variables and placeholders.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h3>Private & secure</h3>
+          <p>All data stored locally. No cloud sync unless you enable it.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">✨</div>
+          <h3>Smart variables</h3>
+          <p>Use {selection}, {clipboard}, {url} to inject context automatically.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡</div>
+          <h3>Reliable</h3>
+          <p>Built for power users. Works consistently, every time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Templates -->
+  <section id="templates">
+    <div class="container">
+      <div class="section-header">
+        <h2>Template library</h2>
+        <p>Start with proven templates, customize to your needs</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div style="margin-bottom: 16px;">
+            <span class="code-block accent" style="display: inline-block; padding: 6px 12px; border-radius: 8px; background: var(--bg-tertiary); border: 1px solid var(--border);">#investigate</span>
+            <span style="margin: 0 8px; color: var(--text-tertiary);">→</span>
+            <span style="font-size: 14px; color: var(--text-tertiary);">expands to</span>
+          </div>
+          <div class="code-block">
+Investigate the topic below thoroughly. Provide sources, key findings, and open questions.
+
+Topic: {selection}{cursor}
+          </div>
+        </div>
+        <div class="card">
+          <div style="margin-bottom: 16px;">
+            <span class="code-block accent" style="display: inline-block; padding: 6px 12px; border-radius: 8px; background: var(--bg-tertiary); border: 1px solid var(--border);">#deconstruct</span>
+            <span style="margin: 0 8px; color: var(--text-tertiary);">→</span>
+            <span style="font-size: 14px; color: var(--text-tertiary);">expands to</span>
+          </div>
+          <div class="code-block">
+Deconstruct the following claim into assumptions, evidence, and potential flaws.
+
+Claim: {selection}{cursor}
+          </div>
+        </div>
+        <div class="card">
+          <div style="margin-bottom: 16px;">
+            <span class="code-block accent" style="display: inline-block; padding: 6px 12px; border-radius: 8px; background: var(--bg-tertiary); border: 1px solid var(--border);">#summarise</span>
+            <span style="margin: 0 8px; color: var(--text-tertiary);">→</span>
+            <span style="font-size: 14px; color: var(--text-tertiary);">expands to</span>
+          </div>
+          <div class="code-block">
+Summarise the following in 5 bullet points. Include key takeaways.
+
+Text: {selection}{cursor}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <h2>What users say</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="testimonial">
+          <p>"Prompt Easy has transformed how I interact with AI. What used to take minutes now takes seconds."</p>
+          <div class="testimonial-author">Sarah Chen</div>
+          <div class="testimonial-role">Product Designer</div>
+        </div>
+        <div class="testimonial">
+          <p>"The custom templates feature is a game-changer. I've built a library of prompts for my entire team."</p>
+          <div class="testimonial-author">Michael Park</div>
+          <div class="testimonial-role">Engineering Lead</div>
+        </div>
+        <div class="testimonial">
+          <p>"Simple, fast, reliable. Exactly what you want from a productivity tool."</p>
+          <div class="testimonial-author">Alex Rivera</div>
+          <div class="testimonial-role">Content Strategist</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2>Simple pricing</h2>
+        <p>Choose the plan that fits your workflow</p>
+      </div>
+      <div class="pricing-toggle">
+        <button class="active" onclick="setPricing('monthly')">Monthly</button>
+        <button onclick="setPricing('annual')">Annual <span style="color: var(--accent); font-size: 12px;">Save 17%</span></button>
+      </div>
+      <div class="grid grid-3">
+        <div class="card pricing-card">
+          <h3>Free</h3>
+          <div class="pricing-price" id="price-free">$0</div>
+          <p style="color: var(--text-secondary); margin-bottom: 32px;">Perfect for trying out Prompt Easy</p>
+          <ul class="pricing-features">
+            <li>10 custom shortcuts</li>
+            <li>Basic templates</li>
+            <li>Works on all sites</li>
+            <li>Local storage only</li>
+          </ul>
+          <a href="#get-started" class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 32px;">Get Started</a>
+        </div>
+        <div class="card pricing-card featured">
+          <div class="pricing-badge">Most Popular</div>
+          <h3>Pro</h3>
+          <div class="pricing-price" id="price-pro">$9<span style="font-size: 18px; color: var(--text-tertiary);">/month</span></div>
+          <p style="color: var(--text-secondary); margin-bottom: 32px;">For power users and professionals</p>
+          <ul class="pricing-features">
+            <li>Unlimited shortcuts</li>
+            <li>All templates</li>
+            <li>Cloud sync</li>
+            <li>Priority support</li>
+            <li>Advanced variables</li>
+          </ul>
+          <a href="#get-started" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 32px;">Start Pro Trial</a>
+        </div>
+        <div class="card pricing-card">
+          <h3>Teams</h3>
+          <div class="pricing-price" id="price-teams">$29<span style="font-size: 18px; color: var(--text-tertiary);">/month</span></div>
+          <p style="color: var(--text-secondary); margin-bottom: 32px;">For teams that need to stay in sync</p>
+          <ul class="pricing-features">
+            <li>Everything in Pro</li>
+            <li>Team templates</li>
+            <li>Shared shortcuts</li>
+            <li>Admin controls</li>
+            <li>Usage analytics</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 32px;">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container" style="max-width: 800px;">
+      <div class="section-header">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div>
+        <div class="faq-item">
+          <div class="faq-question">How does Prompt Easy work?</div>
+          <div class="faq-answer">Type a shortcut like #investigate and press space. The shortcut automatically expands into your full prompt template. It works in any text field on any website.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Which AI platforms are supported?</div>
+          <div class="faq-answer">Prompt Easy works on ChatGPT, Claude, Perplexity, Gemini, and any other website with text inputs. It's not limited to AI platforms.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Is my data secure?</div>
+          <div class="faq-answer">Yes. All shortcuts are stored locally by default. Cloud sync is optional and encrypted. We never access your prompt content.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I create custom shortcuts?</div>
+          <div class="faq-answer">Absolutely. Create unlimited custom shortcuts with variables like {selection}, {clipboard}, {url}, and {title} to inject context automatically.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What happens if I cancel?</div>
+          <div class="faq-answer">You keep all your shortcuts and can continue using the free plan. No data is lost when you cancel.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#templates">Templates</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#docs">Documentation</a>
+          <a href="#blog">Blog</a>
+          <a href="#support">Support</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#about">About</a>
+          <a href="#careers">Careers</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2024 Prompt Easy. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle('light');
+      const isLight = document.documentElement.classList.contains('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      document.querySelector('.theme-toggle').textContent = isLight ? '🌙' : '☀';
+    }
+
+    function setPricing(period) {
+      const buttons = document.querySelectorAll('.pricing-toggle button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      const prices = {
+        monthly: { pro: '$9', teams: '$29' },
+        annual: { pro: '$90', teams: '$290' }
+      };
+      
+      document.getElementById('price-pro').innerHTML = prices[period].pro + '<span style="font-size: 18px; color: var(--text-tertiary);">/' + (period === 'monthly' ? 'month' : 'year') + '</span>';
+      document.getElementById('price-teams').innerHTML = prices[period].teams + '<span style="font-size: 18px; color: var(--text-tertiary);">/' + (period === 'monthly' ? 'month' : 'year') + '</span>';
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light');
+      document.querySelector('.theme-toggle').textContent = '🌙';
+    }
+  </script>
+</body>
+</html>
+
